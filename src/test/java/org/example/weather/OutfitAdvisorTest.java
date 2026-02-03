@@ -1,6 +1,7 @@
 package org.example.weather;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.example.price.PriceService;
+import org.example.price.PriceWatcher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,9 +10,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 //Går att göra egna Extensions klasser
 @ExtendWith(MockitoExtension.class)
-public class OutfitAdvisorTest {
+class OutfitAdvisorTest {
 
     //Skapa mockito.mock i varje test
     //Göra den i de tester som behöver
@@ -20,6 +22,13 @@ public class OutfitAdvisorTest {
     //TestDouble
     @Mock
     WeatherService weatherService;
+
+    @Mock
+    PriceService priceService;
+
+    @Mock
+    PriceWatcher priceWatcher;
+
 
     //Kan automatiskt injekta en WeatherService i konstruktorn
     //Återanvänder samma objekt
@@ -42,4 +51,23 @@ public class OutfitAdvisorTest {
         String advice = advisor.getClothingAdvise();
         assertThat(advice).isEqualTo("T-shirt");
     }
+
+    @Test
+    void defaultAdviseWhenNoTempData(){
+        Mockito.when(weatherService.getTemperature())
+                .thenThrow(new IllegalStateException());
+
+        assertThat(advisor.getClothingAdvise())
+                .isEqualTo("Jeans & Jacket");
+    }
+
+//    @Test
+//    void throwsExceptionWhenPriceServiceIsUnavailable(){
+//        Mockito.when(priceService.getPrice("T-shirt"))
+//                .thenThrow(new IllegalStateException());
+//
+//        var exception = assertThrows(RuntimeException.class,
+//                ()-> priceWatcher.checkPrices());
+//        assertThat(exception).hasMessage("Error sending message");
+//    }
 }

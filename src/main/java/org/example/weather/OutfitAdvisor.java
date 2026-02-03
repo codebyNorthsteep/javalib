@@ -9,12 +9,16 @@ public class OutfitAdvisor {
     }
 
     public String getClothingAdvise() {
-        if (weatherService.getTemperature() < 0) {
-            return "Vinterjacka";
+        try {
+            if (weatherService.getTemperature() < 0)
+                return "Vinterjacka";
+
+            if (weatherService.getTemperature() > 15)
+                return "T-shirt";
+
+            return null;
+        } catch (IllegalStateException e) {
+            return "Jeans & Jacket";
         }
-        if (weatherService.getTemperature() > 15) {
-            return "T-shirt";
-        }
-        return null;
     }
 }

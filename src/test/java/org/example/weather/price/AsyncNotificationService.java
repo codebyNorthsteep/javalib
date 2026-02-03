@@ -7,6 +7,14 @@ public class AsyncNotificationService implements NotificationService {
     private boolean isSent = false;
     @Override
     public void notify(String productName, int price) {
+//        new Thread(()-> {
+//            try {
+//                Thread.sleep(500);
+//                isSent = true;
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }).start();
         isSent = true;
     }
 

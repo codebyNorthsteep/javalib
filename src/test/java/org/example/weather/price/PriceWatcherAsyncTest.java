@@ -1,5 +1,6 @@
 package org.example.weather.price;
 
+import org.awaitility.Awaitility;
 import org.example.price.NotificationService;
 import org.example.price.PriceService;
 import org.example.price.PriceWatcher;
@@ -10,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,8 +35,9 @@ public class PriceWatcherAsyncTest {
                 .thenReturn(95);
         priceWatcher.checkPrices();
 
-        assertThat(notificationService.isSent()).isTrue();
-        Mockito.verify(notificationService, Mockito.times(1))
-                .notify(Mockito.any(), 95);
+        //Async - tar ett tag innan man får ett svar tillbaka
+
+        Awaitility.await().atMost(5, TimeUnit.SECONDS)
+                .until(notificationService::isSent);
     }
 }
