@@ -1,0 +1,5 @@
+# Behåll Linux-skriptet med LF-radbrytningar, även på Windows
+mvnw text eol=lf
+
+# Behåll Windows-skriptet med CRLF (valfritt, men bra praxis)
+mvnw.cmd text eol=crlf
